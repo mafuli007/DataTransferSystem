@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+
+	<!-- software Id -->
+	<SoftwareId>client_1</SoftwareId>
+	
+	<!-- interval used to scan directories, default: 5s -->
+	<ScanInterval>5</ScanInterval>
+
+	<!-- interval used to send heartbeat , default:5s -->
+	<HeartbeatInterval>5</HeartbeatInterval>
+	
+	<!-- Directory used to store files that don't match the rule stated in rule.xml -->
+	<InvalidFileDir>C:\StoreData\InvalidFiles</InvalidFileDir>
+
+	<!-- Configuration about the data directories -->
+	<Addresses>
+		<Address id="1">
+			<!-- Directory that will be scanned every ScanInterval seconds -->
+			<ScanAddresss>C:\SourceData</ScanAddresss>
+			<!-- Directory used to store the data that has been successfully uploaded. -->
+			<DataBackUpAddress>C:\UpBackData</DataBackUpAddress>
+		</Address>
+	</Addresses>
+
+	<!-- Configuration of Monitor Server -->
+	<MonitorServerInfo>
+		<MonitorServerIP>127.0.0.1</MonitorServerIP>
+		<MonitorServerPort>9889</MonitorServerPort>
+	</MonitorServerInfo>
+
+	<!-- Port used to received reupload messages. -->
+	<ReuploaderPort>9888</ReuploaderPort>
+	
+	<!-- ################################ Target Center information ################################## -->
+	<!-- Target software Id -->
+	<TargetSoftwareId>transfer</TargetSoftwareId>
+	<!-- Target FTP Server info -->
+	<FtpServerInfo>
+		<FtpServerIP>192.168.183.129</FtpServerIP>
+		<FtpServerPort>21</FtpServerPort>
+		<FtpServerUserName>test</FtpServerUserName>
+		<FtpServerUserPasswd>123456</FtpServerUserPasswd>
+	</FtpServerInfo>
+
+</items>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 文件过滤规则 列表  phoenix-->
+<!-- 正则表达式测试网址：http://tool.oschina.net/regex/； http://tool.chinaz.com/regex/ -->
+<rules>
+	<rule>[A-Z]{3}_[\dA-Z]{5}\w{12}_\d{14}.[a-zA-Z]{3}</rule>
+</rules>
