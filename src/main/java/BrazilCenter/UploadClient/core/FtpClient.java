@@ -21,7 +21,7 @@ import java.util.Date;
 /**
  * @author phoenix
  */
-public class FtpClient implements Runnable {
+public class FtpClient {
 
 	private FTPClient ftpclient = null;
 	private Configuration conf;
@@ -342,19 +342,16 @@ public class FtpClient implements Runnable {
 		}
 	}
 
-	public void run() {
-		while (true) {
-			/*
-			 * try { if (this.ftpclient.list() == 1) { this.setConnected(false);
-			 * this.ReConnect(); } } catch (IOException e1) {
-			 * this.setConnected(false); this.ReConnect(); }
-			 */
-
-			try {
-				Thread.sleep(Utils.FtpStatusCheckInterval * 1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	public void CheckStatus() {
+		// TODO Auto-generated method stub
+		try {
+			if (this.ftpclient.sendNoOp() == false) {
+				this.setConnected(false);
+				this.ReConnect();
 			}
+		} catch (IOException e1) {
+			this.setConnected(false);
+			this.ReConnect();
 		}
 	}
 }

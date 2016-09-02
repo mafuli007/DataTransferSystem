@@ -84,8 +84,7 @@ public class Scanner extends Thread {
 						file.setFilePath(address);
 						file.setRelativePath(relativePath);
 						file.setBackUpAddress(scanAddressMap.get(scanAddress));
-						LogUtils.logger.info("Find : " + file.getFilename());
-						flist.add(file);
+ 						flist.add(file);
 					} else {// invalid files
 						String oldPath = address + File.separator + subFiles[i];
 						File invalidFile = new File(this.conf.getInvaildFileDir() + File.separator + subFiles[i]);
@@ -136,8 +135,7 @@ public class Scanner extends Thread {
 							
 							/** 3. put the task into the task queue. */
 							Utils.TaskQueue.AddTask(task);
-							LogUtils.logger.info("Add task :" + srcFile.getName());
-						}
+ 						}
 					}
 				}
 			}

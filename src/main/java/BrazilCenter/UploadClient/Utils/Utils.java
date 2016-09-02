@@ -25,7 +25,7 @@ public class Utils {
 	public final static String dateDayFormat = "yyyyMMdd";
 	public final static String REPORT_Local_DIR = "./report/";  
 	public final static String ErrDataDir = "./FailedRecords/"; 
-	public final static int ErrDirScanInterval = (24 * 60 * 60);  
+	public final static int ErrDirScanInterval = (3 * 60);  
 	public static UploadTaskQueue TaskQueue = new UploadTaskQueue(); 
 	public static RealTaskInfoQueue RealTaskInfoQueue = new RealTaskInfoQueue();
 	public static List<RuleObj> rulesList = new LinkedList<RuleObj>();  
