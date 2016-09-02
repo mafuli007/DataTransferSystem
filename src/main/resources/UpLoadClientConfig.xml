@@ -4,16 +4,16 @@
 	<!-- software Id -->
 	<SoftwareId>client_1</SoftwareId>
 	
-	<!-- interval used to scan directories, default: 5s -->
+	<!-- interval, used to scan directories, default: 5s -->
 	<ScanInterval>5</ScanInterval>
 
-	<!-- interval used to send heartbeat , default:5s -->
+	<!-- interval,  used to send heartbeat , default:5s -->
 	<HeartbeatInterval>5</HeartbeatInterval>
 	
 	<!-- Directory used to store files that don't match the rule stated in rule.xml -->
 	<InvalidFileDir>C:\StoreData\InvalidFiles</InvalidFileDir>
 
-	<!-- Configuration about the data directories -->
+	<!-- Configuration about the source data directories -->
 	<Addresses>
 		<Address id="1">
 			<!-- Directory that will be scanned every ScanInterval seconds -->

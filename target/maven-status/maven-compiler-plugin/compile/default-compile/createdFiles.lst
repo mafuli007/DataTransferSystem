@@ -1,4 +1,3 @@
-BrazilCenter\UploadClient\App.class
 BrazilCenter\UploadClient\filter\RuleObj.class
 BrazilCenter\UploadClient\tcp\UdpConnector.class
 BrazilCenter\UploadClient\task\TASKTYPE.class

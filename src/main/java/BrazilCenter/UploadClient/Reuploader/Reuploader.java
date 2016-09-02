@@ -19,9 +19,8 @@ import BrazilCenter.UploadClient.task.TASKSTATUS;
 import BrazilCenter.UploadClient.task.TASKTYPE;
 import BrazilCenter.UploadClient.task.UploadTask;
 
-
 /**
-  * 
+ * 
  * @author maful
  *
  */
@@ -73,7 +72,7 @@ class ServerThread extends Thread {
 	}
 
 	/**
- 	 */
+	 */
 	private boolean isFileReady(File file) {
 		if (file.renameTo(file)) {
 			return true;
@@ -119,7 +118,7 @@ class ServerThread extends Thread {
 	}
 
 	/**
- 	 * 
+	 * 
 	 * @param fileName
 	 * @return
 	 */
@@ -148,27 +147,22 @@ class ServerThread extends Thread {
 					ReUploadMsg msgObj = XMLOperator.ParseReUploadMsgXML(msg);
 					LogUtils.logger.info("Reupload file: " + msgObj.getFileName());
 					String fileName = msgObj.getFileName();
-					if (Utils.filter.isMatched(fileName)) {
- 						FileObj fileObj = this.findFile(fileName);
-						if (fileObj != null) {
-							File tmpfile = new File(fileObj.getFilePath() + File.separator + fileObj.getFilename());
-							if (this.isFileReady(tmpfile)) {
-								
- 									UploadTask task = new UploadTask();
-									task.setDestinationAddress("/DATA/");
-									task.setSourceAddress(fileObj.getFilePath());
-									task.setFileobj(fileObj);
-									task.setTaskStatus(TASKSTATUS.WAIT);
-									task.setTaskType(TASKTYPE.ReTransTask);
-									
- 									Utils.TaskQueue.AddTask(task);
-								}
-							
-						}else{
-							LogUtils.logger.error("Reupload file is not exist: " + fileName);
+					FileObj fileObj = this.findFile(fileName);
+					if (fileObj != null) {
+						File tmpfile = new File(fileObj.getFilePath() + File.separator + fileObj.getFilename());
+						if (this.isFileReady(tmpfile)) {
+
+							UploadTask task = new UploadTask();
+							task.setDestinationAddress("/DATA/");
+							task.setSourceAddress(fileObj.getFilePath());
+							task.setFileobj(fileObj);
+							task.setTaskStatus(TASKSTATUS.WAIT);
+							task.setTaskType(TASKTYPE.ReTransTask);
+
+							Utils.TaskQueue.AddTask(task);
 						}
-					}else{
-						LogUtils.logger.error("Reupload file does not match rules, " + fileName);
+					} else {
+						LogUtils.logger.error("Reupload file is not exist: " + fileName);
 					}
 				}
 			}
