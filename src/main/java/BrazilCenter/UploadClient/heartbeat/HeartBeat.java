@@ -1,33 +1,33 @@
 package BrazilCenter.UploadClient.heartbeat;
 
+import BrazilCenter.DaoUtils.Utils.LogUtils;
+import BrazilCenter.HeartBeat.Utils.HeartBeatUtils;
 import BrazilCenter.UploadClient.Utils.Configuration;
-import BrazilCenter.UploadClient.Utils.XMLOperator;
-import BrazilCenter.UploadClient.tcp.TcpClient;
+import BrazilCenter.UploadClient.tcp.MonitorTcpClient;
+import BrazilCenter.models.HeartBeatObj;
 
 public class HeartBeat extends Thread {
 
 	private Configuration conf;
-	private HardwareObj hardwareobj;
-	private HeartbeatObj hbobj;
-	private TcpClient monitor_client;
+	private HeartBeatObj hbobj;
+	private MonitorTcpClient monitor_client;
 
-	public HeartBeat(Configuration conf, TcpClient client) {
+	public HeartBeat(Configuration conf, MonitorTcpClient client) {
  		this.conf = conf;
- 		hardwareobj = new HardwareObj();
- 		hbobj = new HeartbeatObj();
-		hbobj.setSoftwareId(this.conf.getSoftwareId());
+ 		hbobj = new HeartBeatObj();
+		hbobj.setSoftwareid(this.conf.getSoftwareId());
 		this.monitor_client = client;
 	}
 
 	@Override
 	public void run() {
-		
+		LogUtils.logger.info("heartbeat thread started!");
 		while (true) {
 			/** update sending time and hardware status. */
-			hbobj.update();
-			hardwareobj.update();
 
- 			String msg = XMLOperator.MakeXMLHeartbeat(hbobj, hardwareobj);
+			hbobj.update();
+			
+ 			String msg = HeartBeatUtils.MakeXMLHeartbeat(hbobj);
 			monitor_client.SendHeartbeatMessage(msg);
 			
 			/** sleep for interval seconds. */

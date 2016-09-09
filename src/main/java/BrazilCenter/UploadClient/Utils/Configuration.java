@@ -4,41 +4,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ��˵�������ڱ������������Ϣ����
- * phoenix 20150127*/
+ * phoenix 20150127
+ */
 public class Configuration {
 
-	private String softwareId; // �����ʶ��
-	private String targetSoftwareId;	//Ŀ���ַ�������ʶ��
-	private String backupSfId;	//���������ʶ��
-	
-	private String MessageIp; // ��ת�����������IP��ַ
-	private int MessagePort; // ��ת����������Ķ˿ں�
-	
-	private int reuploaderPort; //�����ش���������˿�
-	
-	private String MonitorServerIp;	//���������IP��ַ
-	private int MonitorServerPort;	//��������Ķ˿ں�
-	
-	private int upLoadThreadNum; // �������ϴ��ļ��߳���
-	
-	private int scanInterval; // ɨ��Ŀ¼��ʱ����
-	private int heartbeatInterval; // ������Ϣʱ����
+	private String softwareId;
+	private String targetSoftwareId;
+	private String backupSfId;
 
-	private Map<String, String> addresses;	//key:ScanAddress, value:BackupAddress
-	private String destinationAddress; // Ŀ��Ŀ¼��ַ
+	private String MessageIp;
+	private int MessagePort;
+
+	private int reuploaderPort;
+
+	private String MonitorServerIp;
+	private int MonitorServerPort;
+	private int upLoadThreadNum;
+
+	private int scanInterval;
+	private int heartbeatInterval;
+
+	private Map<String, String> addresses; // key:ScanAddress,
+											// value:BackupAddress
+	private String destinationAddress;
 	private String invaildFileDir;
-	
-	private String ftpIp; // FTP��������IP��ַ
-	private int ftpPort; // FTP�������Ķ˿�
-	private String ftpusername; // FTP�ͻ����û���
-	private String ftppasswd; // FTP�ͻ�������
-	
-	public Configuration(){
-		this.destinationAddress="/";
+
+	private String ftpIp;
+	private int ftpPort;
+	private String ftpusername;
+	private String ftppasswd;
+
+	public Configuration() {
+		this.destinationAddress = "/";
 		this.addresses = new HashMap<String, String>();
 	}
-	
+
 	public String getBackupSfId() {
 		return backupSfId;
 	}
@@ -110,7 +110,7 @@ public class Configuration {
 	public void setMessagePort(int messagePort) {
 		MessagePort = messagePort;
 	}
-	
+
 	public String getDestinationAddress() {
 		return destinationAddress;
 	}
@@ -167,11 +167,11 @@ public class Configuration {
 		this.ftppasswd = ftppasswd;
 	}
 
-	public void putAddress(String souceAddress, String backUpAddress ){
+	public void putAddress(String souceAddress, String backUpAddress) {
 		this.addresses.put(souceAddress, backUpAddress);
 	}
-	
-	public Map<String,String> getAddress(){
+
+	public Map<String, String> getAddress() {
 		return this.addresses;
 	}
 

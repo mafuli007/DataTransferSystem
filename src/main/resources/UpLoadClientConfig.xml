@@ -11,15 +11,15 @@
 	<HeartbeatInterval>5</HeartbeatInterval>
 	
 	<!-- Directory used to store files that don't match the rule stated in rule.xml -->
-	<InvalidFileDir>C:\StoreData\InvalidFiles</InvalidFileDir>
+	<InvalidFileDir>C:\BrazilTest\ClientInvalidData</InvalidFileDir>
 
-	<!-- Configuration about the source data directories -->
+	<!-- Configuration about the data directories -->
 	<Addresses>
 		<Address id="1">
 			<!-- Directory that will be scanned every ScanInterval seconds -->
-			<ScanAddresss>C:\SourceData</ScanAddresss>
+			<ScanAddresss>C:\BrazilTest\ClientSourceData</ScanAddresss>
 			<!-- Directory used to store the data that has been successfully uploaded. -->
-			<DataBackUpAddress>C:\UpBackData</DataBackUpAddress>
+			<DataBackUpAddress>C:\BrazilTest\ClientBackData</DataBackUpAddress>
 		</Address>
 	</Addresses>
 
@@ -37,7 +37,7 @@
 	<TargetSoftwareId>transfer</TargetSoftwareId>
 	<!-- Target FTP Server info -->
 	<FtpServerInfo>
-		<FtpServerIP>192.168.183.129</FtpServerIP>
+		<FtpServerIP>127.0.0.1</FtpServerIP>
 		<FtpServerPort>21</FtpServerPort>
 		<FtpServerUserName>test</FtpServerUserName>
 		<FtpServerUserPasswd>123456</FtpServerUserPasswd>

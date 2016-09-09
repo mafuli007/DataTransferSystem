@@ -25,8 +25,6 @@ import org.xml.sax.SAXException;
 
 import BrazilCenter.UploadClient.Reuploader.ReUploadMsg;
 import BrazilCenter.UploadClient.filter.RuleObj;
-import BrazilCenter.UploadClient.heartbeat.HardwareObj;
-import BrazilCenter.UploadClient.heartbeat.HeartbeatObj;
 import BrazilCenter.UploadClient.scanner.FileObj;
 
 /**
@@ -210,85 +208,7 @@ public class XMLOperator {
 		return true;
 	}
 	
-	/**
- 	 */
-	public static String MakeXMLHeartbeat(HeartbeatObj heartbeatobj, HardwareObj hardwareobj) {
-		Document document = null;
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			document = builder.newDocument();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		String heartbeatstr = null;
-		Element root = document.createElement("info");
-		document.appendChild(root);
-
- 		Element msgType = document.createElement("MessageType");
-		msgType.appendChild(document.createTextNode("HeartBeat"));
-		root.appendChild(msgType);
-
- 		Element softwareid = document.createElement("SoftwareId");
-		softwareid.appendChild(document.createTextNode(heartbeatobj.getSoftwareId()));
-		root.appendChild(softwareid);
-
- 		Element localip = document.createElement("LocalIp");
-		localip.appendChild(document.createTextNode(hardwareobj.getLocalIp()));
-		root.appendChild(localip);
-
- 		/*
-		 * Element status = document.createElement("Status");
-		 * status.appendChild(document.createTextNode(heartbeatobj.getStatus()))
-		 * ; root.appendChild(status);
-		 */
-
- 		Element currenttime = document.createElement("CurrentTime");
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String datestr = format.format(new Date());
-		currenttime.appendChild(document.createTextNode(datestr));
-		root.appendChild(currenttime);
-
-		/** Duration */
-		Element duration = document.createElement("Duration");
-		duration.appendChild(document.createTextNode(heartbeatobj.getDuration()));
-		root.appendChild(duration);
-
- 		Element hostname = document.createElement("HostName");
-		hostname.appendChild(document.createTextNode(hardwareobj.getHostname()));
-		root.appendChild(hostname);
-
-		/** CPU info */
-		Element cpuPercent = document.createElement("CpuPercent");
-		cpuPercent.appendChild(document.createTextNode(String.valueOf(hardwareobj.getCpuPercent())));
-		root.appendChild(cpuPercent);
-
-		/** Memory info */
-		Element memoryPercent = document.createElement("MemoryPercent");
-		memoryPercent.appendChild(document.createTextNode(String.valueOf(hardwareobj.getMemoryPercent())));
-		root.appendChild(memoryPercent);
-
-		/** disk info */
-		Element diskPercent = document.createElement("DiskPercent");
-		diskPercent.appendChild(document.createTextNode(String.valueOf(hardwareobj.getDiskPercent())));
-		root.appendChild(diskPercent);
-
- 		TransformerFactory tf = TransformerFactory.newInstance();
-		ByteArrayOutputStream bos = null;
-		try {
-			Transformer t = tf.newTransformer();
-			t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			bos = new ByteArrayOutputStream();
-			t.transform(new DOMSource(document), new StreamResult(bos));
-			heartbeatstr = bos.toString();
-		} catch (Exception e) {
-			LogUtils.logger.error(e.getMessage());
-		}
-
-		return heartbeatstr;
-	}
+	
 
 	/**
  	 */

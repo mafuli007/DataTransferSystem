@@ -37,9 +37,8 @@ public class MD5Util {
 	}
 
 	/**
-	 * ��ȡ�ļ������ļ���MD5ֵ
 	 * @param file
-	 * @param listChild ;true�ݹ���Ŀ¼�е��ļ�
+	 * @param listChild ;
 	 * @return
 	 */
 	public static Map<String, String> getDirMD5(File file,boolean listChild) {

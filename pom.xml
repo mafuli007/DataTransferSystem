@@ -108,5 +108,10 @@
 			<artifactId>commons-net</artifactId>
 			<version>3.5</version>
 		</dependency>
+				<dependency>
+			<groupId>BrazilCenter</groupId>
+			<artifactId>BrazilCenterUtils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

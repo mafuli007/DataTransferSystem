@@ -1,16 +1,14 @@
 BrazilCenter\UploadClient\filter\RuleObj.class
-BrazilCenter\UploadClient\tcp\UdpConnector.class
 BrazilCenter\UploadClient\task\TASKTYPE.class
 BrazilCenter\UploadClient\Utils\LogUtils.class
 BrazilCenter\UploadClient\core\UploadTaskQueue.class
-BrazilCenter\UploadClient\heartbeat\HeartbeatObj.class
+BrazilCenter\UploadClient\tcp\UploadTcpClient.class
 BrazilCenter\UploadClient\task\TASKSTATUS.class
 BrazilCenter\UploadClient\Utils\MD5Util.class
 BrazilCenter\UploadClient\scanner\FileObj.class
 BrazilCenter\UploadClient\Utils\Utils.class
 BrazilCenter\UploadClient\scanner\Scanner.class
 BrazilCenter\UploadClient\heartbeat\HeartBeat.class
-BrazilCenter\UploadClient\tcp\TcpClient.class
 BrazilCenter\UploadClient\Utils\UploadReport.class
 BrazilCenter\UploadClient\scanner\ErrDataScanner.class
 BrazilCenter\UploadClient\Utils\RealTaskInfoQueue.class
@@ -19,7 +17,6 @@ BrazilCenter\UploadClient\Utils\XMLOperator.class
 BrazilCenter\UploadClient\filter\FileNameFilter.class
 BrazilCenter\UploadClient\Reuploader\Reuploader.class
 BrazilCenter\UploadClient\core\Trans.class
-BrazilCenter\UploadClient\heartbeat\HardwareObj.class
 BrazilCenter\UploadClient\Reuploader\ReUploadMsg.class
 BrazilCenter\UploadClient\Utils\CacheScanFileList.class
 BrazilCenter\UploadClient\core\FtpClient.class

@@ -10,7 +10,7 @@ import BrazilCenter.UploadClient.core.Trans;
 import BrazilCenter.UploadClient.heartbeat.HeartBeat;
 import BrazilCenter.UploadClient.scanner.ErrDataScanner;
 import BrazilCenter.UploadClient.scanner.Scanner;
-import BrazilCenter.UploadClient.tcp.TcpClient;
+import BrazilCenter.UploadClient.tcp.MonitorTcpClient;
 
 public class Main {
 
@@ -32,23 +32,6 @@ public class Main {
 			return;
 		}
 		LogUtils.logger.info("Parsing File Name Filters Configuration Successfully!");
-		
-		/** start a thread to send real time information, and heart beat thread  */
-		TcpClient monitor_client = new TcpClient(conf.getMonitorServerIp(), conf.getMonitorServerPort());
-		monitor_client.start();
-		if (monitor_client.isConnected()) {
-			LogUtils.logger.info("HeartBeat Thread Started Successfully!");
-		} else {
-			LogUtils.logger.error("HeartBeat Thread Started Failed!");
-		}
-		HeartBeat heatbeat = new HeartBeat(conf, monitor_client);
-		heatbeat.start();
-		
-		/** start the upload thread. */
-		Trans transfer = new Trans(conf);
-		Thread thread = new Thread(transfer);
-		thread.start();
-		
 
 		/** start scan directory for running tasks */
 		LogUtils.logger.info(Main.conf.getSoftwareId() + " Start Scanning......");
@@ -59,8 +42,26 @@ public class Main {
 		ErrDataScanner errScanner = new ErrDataScanner();
 		errScanner.start();
 		
-		/** start the reupload service. */
+		/** start a thread to send real time information, and heart beat thread  */
+		MonitorTcpClient monitor_client = new MonitorTcpClient(conf.getMonitorServerIp(), conf.getMonitorServerPort());
+		Thread monitor_thread = new Thread(monitor_client);
+		
+		/** start the upload thread. */
+		Trans transfer = new Trans(conf, monitor_client);
+		Thread thread = new Thread(transfer);
+		thread.start();
+		
+		/** start the heartbeat thread*/
+		HeartBeat heatbeat = new HeartBeat(conf, monitor_client);
+		heatbeat.start();
+		LogUtils.logger.info("Started!!!!!");
+		
+		monitor_thread.start();
+		
+		/** start the reupload service. ##### this should always be the last step!!!#####*/
 		Reuploader reuploader = new Reuploader(conf);
 		reuploader.StartServer();
+		System.out.println("ddd");
+
 	}
 }

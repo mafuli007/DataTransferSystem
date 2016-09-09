@@ -12,17 +12,16 @@ import BrazilCenter.UploadClient.scanner.FileObj;
 import BrazilCenter.UploadClient.task.TASKSTATUS;
 import BrazilCenter.UploadClient.task.TASKTYPE;
 import BrazilCenter.UploadClient.task.UploadTask;
-import BrazilCenter.UploadClient.tcp.TcpClient;
+import BrazilCenter.UploadClient.tcp.MonitorTcpClient;
 
 public class Trans implements Runnable {
 
 	private Configuration conf;
-	TcpClient monitor_client;
+	MonitorTcpClient monitor_client;
 
-	public Trans(Configuration config) {
+	public Trans(Configuration config, MonitorTcpClient client) {
 		this.conf = config;
-		this.monitor_client = new TcpClient(conf.getMonitorServerIp(), conf.getMonitorServerPort());
-		monitor_client.start();
+		this.monitor_client = client;
 	}
 
 	/***
