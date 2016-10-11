@@ -35,7 +35,7 @@ public class Reuploader {
 		try {
 			this.s = new ServerSocket(this.conf.getReuploaderPort());
 			setConnected(true);
-			LogUtils.logger.info("Reuploader Server Started....Port" + this.conf.getReuploaderPort());
+			LogUtils.logger.info("Reuploader Server Started!");
 		} catch (IOException e) {
 			LogUtils.logger.error("TCP Server Started Failed! :" + e.getMessage());
 		}

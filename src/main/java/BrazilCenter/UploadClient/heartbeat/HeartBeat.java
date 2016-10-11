@@ -1,6 +1,5 @@
 package BrazilCenter.UploadClient.heartbeat;
 
-import BrazilCenter.DaoUtils.Utils.LogUtils;
 import BrazilCenter.HeartBeat.Utils.HeartBeatUtils;
 import BrazilCenter.UploadClient.Utils.Configuration;
 import BrazilCenter.UploadClient.tcp.MonitorTcpClient;
@@ -21,7 +20,7 @@ public class HeartBeat extends Thread {
 
 	@Override
 	public void run() {
-		LogUtils.logger.info("heartbeat thread started!");
+		
 		while (true) {
 			/** update sending time and hardware status. */
 

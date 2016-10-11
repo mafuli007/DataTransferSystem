@@ -40,7 +40,7 @@ public class Utils {
 	 * Test if file is occupied by other program
 	 */
 	public static boolean isFileUnlocked(File file) {
-		try {
+		/*try {
 			FileInputStream in = new FileInputStream(file);
 			if (in != null)
 				in.close();
@@ -49,7 +49,7 @@ public class Utils {
 			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 		return true;
 	}
 

@@ -21,20 +21,20 @@ public class Main {
 
 		/** Initialize*/
 		if (!xmloperator.Initial()) {
-			LogUtils.logger.fatal("Parsing XML configuration failed!");
+			LogUtils.logger.fatal("Parsing basic configuration failed!");
 			return;
 		}
 		conf = xmloperator.getConf();
 		PropertyConfigurator.configure("log4j.properties");
-		LogUtils.logger.info("Parsing XML Configuration Successfully!");
+		LogUtils.logger.info("Parsing basic Configuration Successfully!");
 		if(!xmloperator.ReadRules()){
 			LogUtils.logger.fatal("Parsing File Name Filters Configuration Failed!");
 			return;
 		}
-		LogUtils.logger.info("Parsing File Name Filters Configuration Successfully!");
+		LogUtils.logger.info("Parsing Filters Configuration Successfully!");
 
 		/** start scan directory for running tasks */
-		LogUtils.logger.info(Main.conf.getSoftwareId() + " Start Scanning......");
+		LogUtils.logger.info(Main.conf.getSoftwareId() + " Start Scanning!");
 		Scanner scanner = new Scanner(conf);
 		scanner.start();
 		
@@ -54,7 +54,6 @@ public class Main {
 		/** start the heartbeat thread*/
 		HeartBeat heatbeat = new HeartBeat(conf, monitor_client);
 		heatbeat.start();
-		LogUtils.logger.info("Started!!!!!");
 		
 		monitor_thread.start();
 		

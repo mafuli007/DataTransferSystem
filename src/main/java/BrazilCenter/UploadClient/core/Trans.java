@@ -121,10 +121,10 @@ public class Trans implements Runnable {
 		/** start the ftp client thread. */
 		FtpClient ftpclient = new FtpClient(this.conf);
 		if (!ftpclient.ConnectServer()) {
-			LogUtils.logger.error(Thread.currentThread().getName() + " FTP disconnected! Try to reconnect......");
+			LogUtils.logger.error(this.conf.getFtpIp()  + " FTP disconnected! Try to reconnect......");
 			ftpclient.ReConnect();
 		} else {
-			LogUtils.logger.info(Thread.currentThread().getName() + " FTP Connected!");
+			LogUtils.logger.info(this.conf.getFtpIp() + " FTP Connected!");
 		}
 
 		ftpclient.setWorkingPlace(conf.getDestinationAddress() + File.separator + "DATA/");
