@@ -1,8 +1,7 @@
 package BrazilCenter.UploadClient.filter;
 
 /**
- * ���˹���ʵ��
- * @author maful
+ * @author mafuli
  *
  */
 public class RuleObj {

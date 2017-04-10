@@ -28,6 +28,22 @@ public class Scanner extends Thread {
 	}
 
 	/**
+	 * get file size, usually when you copy the file to one directory, the
+	 * following function will throw exceptions
+	 */
+	private int getFileSize(File file) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(file);
+			int size = fis.available();
+			fis.close();
+			return size;
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+
+	/**
 	 * to test if file ready to be copied. if the file size doesn't change
 	 * anymore, it means it's ready.
 	 */
@@ -43,19 +59,22 @@ public class Scanner extends Thread {
 			if (file.getName().equals(tmpObj.getFilename())) {
 				this.fileCacheList.remove(i);
 				// file already exist.
-				if (file.length() == tmpObj.getFilesize()) { // same size
-					return true;
-				} else { // different size;
-					tmpObj.setFilesize(file.length());
-					this.fileCacheList.add(tmpObj);
-					return false;
+				int currentLen = this.getFileSize(file);
+				if (currentLen > 0) {
+					if (currentLen == tmpObj.getFilesize()) { // same size
+						return true;
+					} else { // different size;
+						tmpObj.setFilesize(this.getFileSize(file));
+						this.fileCacheList.add(tmpObj);
+						return false;
+					}
 				}
 			}
 		}
 		/** new file */
 		FileObj obj = new FileObj();
 		obj.setFilename(file.getName());
-		obj.setFilesize(file.length());
+		obj.setFilesize(this.getFileSize(file));
 		this.fileCacheList.add(obj);
 
 		return false;
@@ -75,30 +94,34 @@ public class Scanner extends Thread {
 			for (int i = 0; i < subFiles.length; i++) {
 
 				File tmpfile = new File(address + File.separator + subFiles[i]);
-				if (tmpfile.isFile()) {
-					if (Utils.filter.isMatched(subFiles[i])) {
-						/** create the file object. */
-						FileObj file = new FileObj();
-						file.setFilename(subFiles[i]);
-						file.setFilesize(tmpfile.length());
-						file.setFilePath(address);
-						file.setRelativePath(relativePath);
-						file.setBackUpAddress(scanAddressMap.get(scanAddress));
- 						flist.add(file);
-					} else {// invalid files
-						String oldPath = address + File.separator + subFiles[i];
-						File invalidFile = new File(this.conf.getInvaildFileDir() + File.separator + subFiles[i]);
-						Utils.CopyFile(oldPath, invalidFile.getPath());
-						tmpfile.delete();
-					}
-				} else { // file is a directory.
-					String tmppath = null;
-					if (relativePath.length() == 0) {
-						tmppath = subFiles[i];
+				if (tmpfile.exists()) {
+					if (tmpfile.isFile()) {
+						if (Utils.filter.isMatched(subFiles[i])) {
+							/** create the file object. */
+							FileObj file = new FileObj();
+							file.setFilename(subFiles[i]);
+							file.setFilesize(tmpfile.length());
+							file.setFilePath(address);
+							file.setRelativePath(relativePath);
+							file.setBackUpAddress(scanAddressMap.get(scanAddress));
+							flist.add(file);
+						} else {// invalid files
+							String oldPath = address + File.separator + subFiles[i];
+							File invalidFile = new File(this.conf.getInvaildFileDir() + File.separator + subFiles[i]);
+							Utils.CopyFile(oldPath, invalidFile.getPath());
+							tmpfile.delete();
+						}
+					} else if (tmpfile.isDirectory()) { // file is a directory.
+						String tmppath = null;
+						if (relativePath.length() == 0) {
+							tmppath = subFiles[i];
+						} else {
+							tmppath = relativePath + File.separator + subFiles[i];
+						}
+						DirectoryScan(scanAddress, tmppath, flist);
 					} else {
-						tmppath = relativePath + File.separator + subFiles[i];
+						LogUtils.logger.error("File error: " + tmpfile.getName() + " unknown file type!");
 					}
-					DirectoryScan(scanAddress, tmppath, flist);
 				}
 			}
 		}
@@ -119,10 +142,10 @@ public class Scanner extends Thread {
 					File srcFile = new File(fileobj.getFilePath() + File.separator + filename);
 					if (this.isFileReady(srcFile)) {
 						if (!CacheScanFileList.IfContainedInCacheScanFileList(filename)) {
-							
+
 							/** 1. create a new task. */
 							UploadTask task = new UploadTask();
-							
+
 							task.setTaskId(Utils.globalTaskIdNum++);
 							task.setDestinationAddress("/DATA/");
 							task.setSourceAddress(fileobj.getFilePath());
@@ -130,12 +153,14 @@ public class Scanner extends Thread {
 							task.setTaskStatus(TASKSTATUS.WAIT);
 							task.setTaskType(TASKTYPE.NewTask);
 
-							/** 2. put the file name into the cache file list. */
+							/**
+							 * 2. put the file name into the cache file list.
+							 */
 							CacheScanFileList.AddToCacheScanFileList(filename);
-							
+
 							/** 3. put the task into the task queue. */
 							Utils.TaskQueue.AddTask(task);
- 						}
+						}
 					}
 				}
 			}

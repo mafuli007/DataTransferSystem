@@ -25,8 +25,8 @@ public class Trans implements Runnable {
 	}
 
 	/***
-	 * (1) copy the file to the back up directory. (2) delete the source file.
-	 * (3) delete the file name from the cache file list.
+	 * (1) copy files to the back up directory. (2) delete source files.
+	 * (3) delete file's name from the cache file list.
 	 * 
 	 * @param report
 	 * @param task

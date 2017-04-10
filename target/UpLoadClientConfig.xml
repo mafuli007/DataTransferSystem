@@ -2,7 +2,7 @@
 <items>
 
 	<!-- software Id -->
-	<SoftwareId>client_2</SoftwareId>
+	<SoftwareId>client_1</SoftwareId>
 	
 	<!-- interval, used to scan directories, default: 5s -->
 	<ScanInterval>5</ScanInterval>
@@ -30,7 +30,7 @@
 	</MonitorServerInfo>
 
 	<!-- Port used to received reupload messages. -->
-	<ReuploaderPort>9808</ReuploaderPort>
+	<ReuploaderPort>9888</ReuploaderPort>
 	
 	<!-- ################################ Target Center information ################################## -->
 	<!-- Target software Id -->

@@ -1,8 +1,8 @@
 BrazilCenter\UploadClient\filter\RuleObj.class
+BrazilCenter\UploadClient\tcp\MonitorTcpClient.class
 BrazilCenter\UploadClient\task\TASKTYPE.class
 BrazilCenter\UploadClient\Utils\LogUtils.class
 BrazilCenter\UploadClient\core\UploadTaskQueue.class
-BrazilCenter\UploadClient\tcp\UploadTcpClient.class
 BrazilCenter\UploadClient\task\TASKSTATUS.class
 BrazilCenter\UploadClient\Utils\MD5Util.class
 BrazilCenter\UploadClient\scanner\FileObj.class

@@ -1,4 +1,3 @@
-H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\tcp\UploadTcpClient.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\core\Trans.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\Utils\UploadReport.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\Utils\Utils.java
@@ -16,6 +15,7 @@ H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCente
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\core\UploadTaskQueue.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\filter\FileNameFilter.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\Utils\Configuration.java
+H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\tcp\MonitorTcpClient.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\task\TASKTYPE.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\Utils\XMLOperator.java
 H:\WorkSpace\BrazilCenter\UploadClient2.0\UploadClient\src\main\java\BrazilCenter\UploadClient\scanner\ErrDataScanner.java

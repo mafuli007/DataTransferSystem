@@ -23,7 +23,7 @@ import java.util.Date;
  */
 public class FtpClient {
 
-	private FTPClient ftpclient = null;
+	private FTPClient _ftpclient = null;
 	private Configuration conf;
 	private boolean isConnected = false;
 
@@ -34,19 +34,19 @@ public class FtpClient {
 			} else {
 				while (true) {
 					try {
-						this.ftpclient.connect(conf.getFtpIp(), conf.getFtpPort());
-						this.ftpclient.setControlEncoding("UTF-8");
+						this._ftpclient.connect(conf.getFtpIp(), conf.getFtpPort());
+						this._ftpclient.setControlEncoding("UTF-8");
 
-						int reply = this.ftpclient.getReplyCode();
+						int reply = this._ftpclient.getReplyCode();
 						if (!FTPReply.isPositiveCompletion(reply)) {
-							this.ftpclient.disconnect();
+							this._ftpclient.disconnect();
 							LogUtils.logger.error(Thread.currentThread().getName() + " FTP connecting failed!");
 						} else {
-							if (!this.ftpclient.login(conf.getFtpusername(), conf.getFtppasswd())) {
+							if (!this._ftpclient.login(conf.getFtpusername(), conf.getFtppasswd())) {
 								LogUtils.logger.error("FTP failed to log in!");
 							} else {
 								LogUtils.logger.info(Thread.currentThread().getName() + " FTP relogin successfully!");
-								this.ftpclient.enterLocalPassiveMode();
+								this._ftpclient.enterLocalPassiveMode();
 								this.isConnected = true;
 								return true;
 							}
@@ -70,15 +70,15 @@ public class FtpClient {
 
 	public boolean ConnectServer() {
 		try {
-			this.ftpclient.connect(conf.getFtpIp(), conf.getFtpPort());
-			this.ftpclient.setControlEncoding("UTF-8");
+			this._ftpclient.connect(conf.getFtpIp(), conf.getFtpPort());
+			this._ftpclient.setControlEncoding("UTF-8");
 
-			int reply = this.ftpclient.getReplyCode();
+			int reply = this._ftpclient.getReplyCode();
 			if (!FTPReply.isPositiveCompletion(reply)) {
-				this.ftpclient.disconnect();
+				this._ftpclient.disconnect();
 				return false;
 			} else {
-				if (!this.ftpclient.login(conf.getFtpusername(), conf.getFtppasswd())) {
+				if (!this._ftpclient.login(conf.getFtpusername(), conf.getFtppasswd())) {
 					return false;
 				} else {
 					this.isConnected = true;
@@ -91,25 +91,28 @@ public class FtpClient {
 			LogUtils.logger.error(Thread.currentThread().getName() + " FTP connecting failed!" + e.getMessage());
 			return false;
 		}
-		ftpclient.enterLocalPassiveMode();
+		_ftpclient.enterLocalPassiveMode();
 		return true;
 	}
 
 	public FtpClient(Configuration config) {
 		this.conf = config;
-		ftpclient = new FTPClient();
-		ftpclient.setControlEncoding("UTF-8");
-		ftpclient.setControlKeepAliveTimeout(300);
+		_ftpclient = new FTPClient();
+		_ftpclient.setControlEncoding("UTF-8");
+		_ftpclient.setControlKeepAliveTimeout(300);
 	}
 
 	/** generate report file's name */
 	private String MakeReportFileName(UploadReport rpt){
 
 		FileObj srcFileObj = rpt.getSrcFileObj();
+		
 		String date_str = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		String fileNameWithoutPath = srcFileObj.getFilename().substring(0, srcFileObj.getFilename().lastIndexOf('.'));
-		String rptFileName = Utils.REPORT_Local_DIR + date_str + "_" + fileNameWithoutPath + ".xml";
- 
+		String sourceFileName = srcFileObj.getFilename();
+		String fileNameWithoutPath = sourceFileName.substring(0, sourceFileName.lastIndexOf('.'));
+		String suffix = sourceFileName.substring(sourceFileName.lastIndexOf('.') + 1);
+		String rptFileName = Utils.REPORT_Local_DIR + date_str + "_" + fileNameWithoutPath +'.' + suffix + ".xml";
+		
 		return rptFileName;
 	}
 	
@@ -123,7 +126,7 @@ public class FtpClient {
 			this.ReConnect();
 		}
 		
-		/**1. create a local report file. */
+		/**1. create a local report. */
 		String rptFileName = this.MakeReportFileName(report);
 		report.setReportName(rptFileName);
 		String data = XMLOperator.MakeXMLUploadReport(report);
@@ -140,19 +143,19 @@ public class FtpClient {
 		String workingDir = this.conf.getDestinationAddress() + "CTL/";
 		try {
 			fis = new FileInputStream(tmpfile);
-			while (!(this.ftpclient.changeWorkingDirectory(workingDir))) {
-				if (!ftpclient.makeDirectory(workingDir)) {
-					LogUtils.logger.error("Make Directory failed at FTP Server!");
+			while (!(this._ftpclient.changeWorkingDirectory(workingDir))) {
+				if (!_ftpclient.makeDirectory(workingDir)) {
+					LogUtils.logger.error("Create directory failed at FTP server!");
 					return uploadresult;
 				}
 			}
-			this.ftpclient.setBufferSize(1024);
-			this.ftpclient.setControlEncoding("UTF-8");
-			this.ftpclient.setFileType(FTPClient.BINARY_FILE_TYPE);
-			if (this.ftpclient.storeFile(new String(tmpfile.getName()), fis)) {
+			this._ftpclient.setBufferSize(1024);
+			this._ftpclient.setControlEncoding("UTF-8");
+			this._ftpclient.setFileType(FTPClient.BINARY_FILE_TYPE);
+			if (this._ftpclient.storeFile(new String(tmpfile.getName()), fis)) {
 				uploadresult = true;
 			} else {
-				LogUtils.logger.error("Uploading " + tmpfile.getName() + " failed!");
+				LogUtils.logger.error("Upload " + tmpfile.getName() + " failed!");
 				return uploadresult;
 			}
 		} catch (FileNotFoundException e) {
@@ -161,7 +164,7 @@ public class FtpClient {
 		} catch (SocketException e) {
 			LogUtils.logger.error("Network error:" + e.getMessage());
 			try {
-				this.ftpclient.disconnect();
+				this._ftpclient.disconnect();
 				LogUtils.logger.error("FTP disconnected! Trying to reconnect.....");
 				if (this.ReConnect() == true) {
 					return this.FtpUploadReport(report);
@@ -171,13 +174,13 @@ public class FtpClient {
 				ea.printStackTrace();
 			}
 		} catch (IOException e) {
-			LogUtils.logger.error("Uploading failed: " + tmpfile.getName() + " " + e.getMessage());
-			if (!this.ftpclient.isConnected()) {
+			LogUtils.logger.error("Upload failed: " + tmpfile.getName() + " " + e.getMessage());
+			if (!this._ftpclient.isConnected()) {
 				this.isConnected = false;
 			}
 			return uploadresult;
 		} catch (Exception e) {
-			LogUtils.logger.error("Uploading failed:" + tmpfile.getName() + " " + e.getMessage());
+			LogUtils.logger.error("Upload failed:" + tmpfile.getName() + " " + e.getMessage());
 			return uploadresult;
 		} finally {
 			try {
@@ -194,17 +197,20 @@ public class FtpClient {
 		return true;
 	}
 
-	public void setWorkingPlace(String workingDir) {
+	public boolean setWorkingPlace(String workingDir) {
 		try {
-			while (!(this.ftpclient.changeWorkingDirectory(workingDir))) {
-				if (!ftpclient.makeDirectory(workingDir)) {
-					LogUtils.logger.error("Make Directory failed at FTP Server!");
+			while (!(this._ftpclient.changeWorkingDirectory(workingDir))) {
+				if (!_ftpclient.makeDirectory(workingDir)) {
+					LogUtils.logger.error("Create directory failed at FTP server!");
+					return false;
 				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -222,12 +228,12 @@ public class FtpClient {
 		SimpleDateFormat timeFormat = new SimpleDateFormat(Utils.dateFormat24Mis);
 
 		/***
-		 * Try fo find is the connection is usable!
+		 * Try fo find if the connection is usable!
 		 */
-		int reply = this.ftpclient.getReplyCode();
+		int reply = this._ftpclient.getReplyCode();
 		if (!FTPReply.isPositiveCompletion(reply)) {
 			try {
-				this.ftpclient.disconnect();
+				this._ftpclient.disconnect();
 				this.isConnected = false;
 				if (this.ReConnect() == true) {
 					report = this.FtpUploadFile(task);
@@ -244,37 +250,37 @@ public class FtpClient {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(srcFile);
-			if (!(this.ftpclient.changeWorkingDirectory(workingDir))) {
+			if (!(this._ftpclient.changeWorkingDirectory(workingDir))) {
 				LogUtils.logger.error("FTP client enter into workplace failed:" + workingDir);
 				return null;
 			}
-			this.ftpclient.setBufferSize(1024);
-			this.ftpclient.setControlEncoding("UTF-8");
-			this.ftpclient.setFileType(FTPClient.BINARY_FILE_TYPE);
+			this._ftpclient.setBufferSize(1024);
+			this._ftpclient.setControlEncoding("UTF-8");
+			this._ftpclient.setFileType(FTPClient.BINARY_FILE_TYPE);
 
 			/** begin to upload the file. */
 			LogUtils.logger.info("Start to upload: " + srcFileobj.getFilename());
 			report.setStartSendTime(timeFormat.format(new Date()));
-			if (this.ftpclient.storeFile(new String(srcFileobj.getFilename()), fis)) {
-				LogUtils.logger.info(Thread.currentThread().getName() + " " + ": upload " + srcFileobj.getFilename()
-						+ " Successfully!");
+			if (this._ftpclient.storeFile(new String(srcFileobj.getFilename()), fis)) {
+				LogUtils.logger.info(Thread.currentThread().getName() + " " + ": Upload " + srcFileobj.getFilename()
+						+ " successfully!");
 				uploadresult = true;
 			} else {
 				LogUtils.logger
 						.error(Thread.currentThread().getName() + " upload " + srcFileobj.getFilename() + " failed!");
-				report.setFailReason("sotreFile return false as a result!");
+				report.setFailReason("FTP sotre file return false as a result!");
 			}
 			report.setEndSendTime(timeFormat.format(new Date()));
 		} catch (FileNotFoundException e) {
 			
-			LogUtils.logger.error("Can not find file: " + srcFile.getName());
-			report.setFailReason("Can not find file: " + srcFile.getName());
+			LogUtils.logger.error("Can not find file: " + srcFile.getAbsolutePath());
+			report.setFailReason("Can not find file: " + srcFile.getAbsolutePath());
 			
 		} catch (SocketException e) { // may be the ftp is disconnected!
 			
 			LogUtils.logger.error("Network Error: " + e.getMessage());
 			try {
-				this.ftpclient.disconnect();
+				this._ftpclient.disconnect();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -321,9 +327,9 @@ public class FtpClient {
 
 	public void Close() {
 		try {
-			ftpclient.logout();
-			if (ftpclient.isConnected()) {
-				ftpclient.disconnect();
+			_ftpclient.logout();
+			if (_ftpclient.isConnected()) {
+				_ftpclient.disconnect();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -345,7 +351,7 @@ public class FtpClient {
 	public void CheckStatus() {
 		// TODO Auto-generated method stub
 		try {
-			if (this.ftpclient.sendNoOp() == false) {
+			if (this._ftpclient.sendNoOp() == false) {
 				this.setConnected(false);
 				this.ReConnect();
 			}

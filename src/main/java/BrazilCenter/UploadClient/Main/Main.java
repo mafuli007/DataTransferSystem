@@ -60,7 +60,6 @@ public class Main {
 		/** start the reupload service. ##### this should always be the last step!!!#####*/
 		Reuploader reuploader = new Reuploader(conf);
 		reuploader.StartServer();
-		System.out.println("ddd");
 
 	}
 }
